@@ -40,16 +40,22 @@ function addItem (request, response) {
     response.send(200)
     }
 
+//THIS GET REQUEST RETURNS ALL ITEMS
 app.get("/get/items", getItems)
 //** week5, get all items from the json database*/
   function getItems (request, response) {
     //begin here
-    
+    var data = fs.readFileSync('database.json');
+    response.json(JSON.parse(data));
   } 
 
+//THIS GET REQUEST RETURNS ITEMS THAT MATCH THE SEARCH
 app.get("/get/searchitem",searchItems)
 //**week 5, search items service */
   function searchItems (request, response) {
     //begin here
-    
+    var searchField = request.query.taskname; //takes in the parameter passed in from the frontend called taskname
+    var json = JSON.parse (fs.readFileSync('database.json'));
+    var returnData = json.filter(jsondata => jsondata.Task === searchField); //only includes the data that matches the searched field
+    response.json(returnData);
   }
